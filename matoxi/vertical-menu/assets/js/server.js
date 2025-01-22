@@ -9,10 +9,12 @@ const session = require('express-session');
 const nodemailer = require('nodemailer')
 const bcrypt = require('bcrypt');
 const sgMail = require('@sendgrid/mail');
-const MySQLStore = require('express-mysql-session')(session);
 sgMail.setApiKey(process.env.API_KEY)
 
-
+const sessao = {
+    usuario: null,
+    logado: false
+}
 
 const confirmacao = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -41,12 +43,7 @@ async function enviarEmail(destinatario, assunto, mensagem) {
     
 }
 
-const storeSession = new MySQLStore ({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB
-})
+
 
 const banco = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -58,17 +55,7 @@ const banco = mysql.createConnection({
 
 
 app.set('trust proxy', 1)
-app.use(session({
-    secret: process.env.SESSION_PASSWORD,
-    store: storeSession,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { 
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true
-    }
 
-}));
 
 
 banco.connect(function(err){
@@ -271,8 +258,8 @@ app.put('/reset', async function (req, res){
 
 app.get('/sessao', async function (req,res) {
     res.setHeader('Content-Type', 'application/json');
-    console.log(`essa é a sessao: ${req.session.usuario}`)
-    res.json(req.session.usuario);
+
+    res.json(sessao.usuario);
 })
 
 app2.get('/confirmar-email', async function (req, res) {
@@ -299,11 +286,8 @@ app.post('/login', async function (req, res) {
             
             if(result != null) {
                 
-                req.session.authenticated = true;
-                req.session.user = result[0].usuario;
-                req.session.email = email
-                req.session.adm = adm
-                
+                sessao.logado = true
+                sessao.usuario = result[0].usuario;               
 
                    
                 res.json({user: result, message: 'Logado!'})
@@ -325,13 +309,13 @@ app.post('/login', async function (req, res) {
 })
 
 app.post('/logout', async function (req, res) { 
-    req.session.destroy((err) =>{
-        if(err) res.status(500).json({ deslogado: false, message: 'Erro ao encerrar a sessão' });
-        else {
-            res.status(200).json({ deslogado: true, message: 'Logout realizado com sucesso' });
-        }
-    }) 
-
+    try{
+        sessao.logado = false;
+        sessao.usuario = null;
+        res.status(200).json({ deslogado: true, message: 'Logout realizado com sucesso' });
+    }catch(erro){
+        res.status(500).json({message: erro})
+    }
 })
 
 app.put('/atualiza', async function(req,res) {
