@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--favicon-->
+	<link rel="icon" href="assets/images/favicon-32x32.png" type="image/png">
+  <title>ADM</title>
+
+  <!--plugins-->
+  <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
+  <link href="assets/plugins/fullcalendar/css/main.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/plugins/metismenu/metisMenu.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/plugins/metismenu/mm-vertical.css">
+  <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet">
+  <!--bootstrap css-->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
+  <!--main css-->
+  <link href="assets/css/bootstrap-extended.css" rel="stylesheet">
+  <link href="sass/main.css" rel="stylesheet">
+  <link href="sass/dark-theme.css" rel="stylesheet">
+  <link href="sass/semi-dark.css" rel="stylesheet">
+  <link href="sass/bordered-theme.css" rel="stylesheet">
+  <link href="sass/responsive.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-login">
+  <script src="assets/js/config.js"></script>
+  
+    <div class="container-fluid my-5">
+      <div class="row">
+         <div class="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mx-auto">
+          <div class="card rounded-4">
+            <div class="card-body p-5">
+                <img src="assets/images/logo1.png" class="mb-4" width="145" alt="">
+                <h4 class="fw-bold">Administrador</h4>
+                <p class="mb-0">Página para liberar acessos</p>
+
+                <div class="form-body my-4">
+                  <form class="row g-3" id="telaAdm">
+                    <div class="dropdown">
+                  
+                      <select onclick="contas()" class="form-select" id="totalUsuario">
+                        <option value="" disabled selected>Selecione a conta</option>
+
+                      </select>
+                        
+                      </div>
+                    <div class="col-12">
+                      <label for="email" class="form-label">Usuário</label>
+                      <input id="nomeUsuario" disabled type="text" class="form-control" id="email" placeholder="Joao_123">
+                    </div>
+                    <hr>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="habilitarConta" id="habilita">
+                      <label class="form-check-label" for="habilita">Habilitar Conta</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="habilitarConta" id="desabilita" >
+                      <label class="form-check-label" for="desabilita">Desabilitar Conta</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="habilitarConta" id="exclui">
+                      <label class="form-check-label" for="exclui">Excluir Conta</label>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="col-12">
+                      <div class="d-grid">
+                        <button type="submit" id="atualiza" class="btn btn-primary">Confirmar</button>
+                        
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="d-grid">
+                        <button type="button" ><a href="index.html">Ir para o painel</a></button> 
+                        
+                      </div>
+                    </div>
+                    
+                  </form>
+                </div>
+
+                
+
+                
+
+            </div>
+          </div>
+         </div>
+      </div><!--end row-->
+   </div>
+   <script src="assets/js/adm.js"></script>
+</body>
+
+</html>
