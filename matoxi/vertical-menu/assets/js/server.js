@@ -9,6 +9,8 @@ const bcrypt = require('bcrypt');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.API_KEY)
 
+
+
 const sessao = {
     usuario: null,
     logado: false
@@ -341,27 +343,18 @@ app.get('/users', async function(req,res){
 })
 
 app2.get('/', (req,res) =>{
-    if(!req.session) res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/auth-basic-login.html')
-    else 
-        if(!req.session.authenticated) res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/auth-basic-login.html')
-    
-        else res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/index.html')
+    if(sessao.logado) res.sendFile('../../index.html')
+    else res.sendFile('../../auth-basic-login.html')
 })
 
 app2.get('/index.html', (req,res) =>{
-    //if(!req.session) res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/auth-basic-login.html')
-        //else 
-            //if(!req.session.authenticated) res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/auth-basic-login.html')
-        
-             res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/index.html')
+    if(sessao.logado) res.sendFile('../../index.html')
+        else res.sendFile('../../auth-basic-login.html') 
 })
 
 app2.get('/adm.html', (req,res) =>{
-    if(!req.session) res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/auth-basic-login.html')
-        else 
-            if(!req.session.authenticated) res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/auth-basic-login.html')
-        
-            else res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/adm.html')
+    if(sessao.logado) res.sendFile('../../adm.html')
+    else res.sendFile('../../auth-basic-login.html')
 })
 
 app2.use(express.static('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/'));
