@@ -1,5 +1,5 @@
 const express = require('express');
-require ('dotenv').config({path: 'C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/env/.env'});
+require ('dotenv').config({path: 'C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/.env'});
 const app = express();
 const app2 = express();
 const mysql = require('mysql2');
@@ -13,16 +13,6 @@ const sessao = {
     usuario: null,
     logado: false
 }
-
-const confirmacao = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth:{
-        user: 'confirmacaodeemailsrs2@gmail.com',
-        pass: process.env.EMAIL_PASSWORD
-    }
-})
 
 
 async function enviarEmail(destinatario, assunto, mensagem) {
