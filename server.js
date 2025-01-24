@@ -67,51 +67,25 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 
-app.get('/', async function(req,res){
-    
-    try{
 
-        const [vitoria] = await banco.query(`select * from dados where numero = 7001`);
-        const [bh] = await banco.query(`select * from dados where numero = 11001`);
-        const [barbacena] = await banco.query(`select * from dados where numero = 11021`);
-        const [contagem] = await banco.query(`select * from dados where numero = 11022`);
-        const [divinopolis] = await banco.query(`select * from dados where numero = 11023`);
-        const [GV] = await banco.query(`select * from dados where numero = 11024`);
-        const [juizFora] = await banco.query(`select * from dados where numero = 11025`);
-        const [montesClaros] = await banco.query(`select * from dados where numero = 11026`);
-        const [ouroPreto] = await banco.query(`select * from dados where numero = 11027`);
-        const [pocos] = await banco.query(`select * from dados where numero = 11028`);
-        const [uberaba] = await banco.query(`select * from dados where numero = 11029`);
-        const [uberlandia] = await banco.query(`select * from dados where numero = 11030`);
-        const [varginha] = await banco.query(`select * from dados where numero = 11031`);
-        const [diamantina] = await banco.query(`select * from dados where numero = 11032`);
-        const [teofilo] = await banco.query(`select * from dados where numero = 11033`);
-        
-        res.json({vitoria, bh, barbacena, contagem, divinopolis, GV, juizFora, montesClaros, ouroPreto, pocos, uberaba, uberlandia, varginha
-            , diamantina, teofilo
-        });
-    } catch (error){
-        console.log(error);
-    }
-});
 
 app.get('/tabela', async function(req,res){
     try{
-        const [vitoria] = await banco.query(`select * from pactuacao where Gerencia = 'Vitória'`);
-        const [bh] = await banco.query(`select * from pactuacao where Gerencia = 'Belo Horizonte'`);
-        const [barbacena] = await banco.query(`select * from pactuacao where Gerencia = 'Barbacena'`);
-        const [contagem] = await banco.query(`select * from pactuacao where Gerencia = 'Contagem'`);
-        const [divinopolis] = await banco.query(`select * from pactuacao where Gerencia = 'Divinópolis'`);
-        const [GV] = await banco.query(`select * from pactuacao where Gerencia = 'Governador Valadares'`);
-        const [juizFora] = await banco.query(`select * from pactuacao where Gerencia = 'Juíz de Fora'`);
-        const [montesClaros] = await banco.query(`select * from pactuacao where Gerencia = 'Montes Claros'`);
-        const [ouroPreto] = await banco.query(`select * from pactuacao where Gerencia = 'Ouro Preto'`);
-        const [pocos] = await banco.query(`select * from pactuacao where Gerencia = 'Poços de Caldas'`);
-        const [uberaba] = await banco.query(`select * from pactuacao where Gerencia = 'Uberaba'`);
-        const [uberlandia] = await banco.query(`select * from pactuacao where Gerencia = 'Uberlandia'`);
-        const [varginha] = await banco.query(`select * from pactuacao where Gerencia = 'Varginha'`);
-        const [diamantina] = await banco.query(`select * from pactuacao where Gerencia = 'Diamantina'`);
-        const [teofilo] = await banco.query(`select * from pactuacao where Gerencia = 'Teófilo Otoni'`);
+        const { rows: [vitoria]} = await banco.query(`select * from pactuacao where Gerencia = 'Vitória'`);
+        const { rows: [bh]} = await banco.query(`select * from pactuacao where Gerencia = 'Belo Horizonte'`);
+        const { rows: [barbacena]} = await banco.query(`select * from pactuacao where Gerencia = 'Barbacena'`);
+        const { rows: [contagem]} = await banco.query(`select * from pactuacao where Gerencia = 'Contagem'`);
+        const { rows: [divinopolis]} = await banco.query(`select * from pactuacao where Gerencia = 'Divinópolis'`);
+        const { rows: [GV] }= await banco.query(`select * from pactuacao where Gerencia = 'Governador Valadares'`);
+        const { rows: [juizFora]} = await banco.query(`select * from pactuacao where Gerencia = 'Juíz de Fora'`);
+        const { rows: [montesClaros]} = await banco.query(`select * from pactuacao where Gerencia = 'Montes Claros'`);
+        const { rows: [ouroPreto]} = await banco.query(`select * from pactuacao where Gerencia = 'Ouro Preto'`);
+        const { rows: [pocos]} = await banco.query(`select * from pactuacao where Gerencia = 'Poços de Caldas'`);
+        const { rows: [uberaba]} = await banco.query(`select * from pactuacao where Gerencia = 'Uberaba'`);
+        const { rows: [uberlandia]} = await banco.query(`select * from pactuacao where Gerencia = 'Uberlandia'`);
+        const { rows: [varginha]} = await banco.query(`select * from pactuacao where Gerencia = 'Varginha'`);
+        const { rows: [diamantina]} = await banco.query(`select * from pactuacao where Gerencia = 'Diamantina'`);
+        const { rows: [teofilo]} = await banco.query(`select * from pactuacao where Gerencia = 'Teófilo Otoni'`);
         res.setHeader('Content-Type', 'application/json');
         res.json({vitoria, bh, barbacena, contagem, divinopolis, GV, juizFora, montesClaros, ouroPreto, pocos, uberaba, uberlandia, varginha
             , diamantina, teofilo
@@ -123,7 +97,7 @@ app.get('/tabela', async function(req,res){
 
 app.post('/confereSenha', async function (req, res){
     const {email, senha} = req.body;
-    const [resultado] = await banco.query(`select senha, adm, emailConfirmado, contaHabilitada from usuarios where email = '${email}'`);
+    const { rows: [resultado]} = await banco.query(`select senha, adm, emailConfirmado, contaHabilitada from usuarios where email = '${email}'`);
     if(resultado.length == 0){
         res.status(500).json({ 
             correto: false,
@@ -178,7 +152,7 @@ app.post('/recovery', async function (req, res) {
     
     const {destinatario} = req.body;
     try {
-        const [compare] = await banco.query(`select usuario from usuarios where email = '${destinatario}'`)
+        const { rows: [compare]} = await banco.query(`select usuario from usuarios where email = '${destinatario}'`)
         if(compare.length == 0){
             res.status(404).json({ message: "Erro ao achar usuário",
                 enviado: false
@@ -218,7 +192,7 @@ app.put('/reset', async function (req, res){
     const {usuario, senha} = req.body;
     
     try {
-        const [compare] = await banco.query(`select senha from usuarios where usuario = '${usuario}'`)
+        const { rows: [compare]} = await banco.query(`select senha from usuarios where usuario = '${usuario}'`)
         if(compare.length == 0){
             res.status(500).json({ message: "Erro ao achar usuário",
                 reset: false
@@ -275,7 +249,7 @@ app.post('/login', async function (req, res) {
         
         if(email.endsWith('@inss.gov.br')){
 
-            const [result] = await banco.query(`select usuario from usuarios where email = ?`,
+            const { rows: [result]} = await banco.query(`select usuario from usuarios where email = ?`,
                 [email]
             );
             
@@ -339,7 +313,7 @@ app.delete('/exclui', async function(req,res) {
 
 app.get('/users', async function(req,res){
     try{
-        const [users] = await banco.query(`select * from usuarios`);
+        const { rows: [users]} = await banco.query(`select * from usuarios`);
         res.setHeader('Content-Type', 'application/json');
         res.json(users);
     } catch (error){

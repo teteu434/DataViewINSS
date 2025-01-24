@@ -1,14 +1,4 @@
-export async function fetchData() {
-    try {
-        const response = await fetch('http://localhost:4000/');
-        const dados = await response.json();
-        return dados;
-        
-    } catch (error) {
-        console.error("Erro ao buscar dados:", error);
-        return [];
-    }
-}
+
 
 export async function fetchData2() {
     try {
