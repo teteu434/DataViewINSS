@@ -14,7 +14,7 @@ export async function fetchData2() {
 
 export async function fetchData3() {
     try {
-        const response = await fetch('http://localhost:3000/sessao');
+        const response = await fetch('http://localhost:4000/sessao');
         console.log(response)
         const dados = await response.json();
         return dados;

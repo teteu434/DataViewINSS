@@ -2,7 +2,6 @@ const express = require('express');
 require ('dotenv').config({path: 'C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/.env'});
 const path = require('path')
 const app = express();
-const app2 = express();
 const { Client } = require('pg');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -59,7 +58,9 @@ banco.connect((err) => {
   });
   
 
-  app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://dataviewinss.onrender.com'],
+}));
 
 app.use(express.json());
 
@@ -229,7 +230,7 @@ app.get('/sessao', async function (req,res) {
     res.json(sessao.usuario);
 })
 
-app2.get('/confirmar-email', async function (req, res) {
+app.get('/confirmar-email', async function (req, res) {
     const { email } = req.query;
     try {
         await banco.query(`update usuarios set emailConfirmado = true where email = '${email}'`)
@@ -319,31 +320,25 @@ app.get('/users', async function(req,res){
     }
 })
 
-app2.get('/', (req,res) =>{
+app.get('/', (req,res) =>{
     if(sessao.logado) res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//index.html'))
     else res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//auth-basic-login.html'))
 })
 
-app2.get('/index.html', (req,res) =>{
+app.get('/index.html', (req,res) =>{
     if(sessao.logado) res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//index.html'))
         else res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//auth-basic-login.html'))
 })
 
-app2.get('/adm.html', (req,res) =>{
+app.get('/adm.html', (req,res) =>{
     if(sessao.logado) res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//adm.html.html'))
     else res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//auth-basic-login.html'))
 })
 
-app2.use(express.static('matoxi/vertical-menu/'));
+app.use(express.static(path.join(__dirname, 'matoxi/vertical-menu//adm.html.html')));
 
 
 
-
-
-app2.listen(process.env.API_PORT_SITE, '0.0.0.0', function(){
-    console.log("conectou o site");
-});
-
-app.listen(process.env.API_PORT_BACK, '0.0.0.0', function(){
-    console.log("conectou o banco");
+app.listen(process.env.API_PORT_SITE, '0.0.0.0', function(){
+    console.log("conectado pai");
 });
