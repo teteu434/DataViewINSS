@@ -1,5 +1,6 @@
 const express = require('express');
 require ('dotenv').config({path: 'C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/.env'});
+const path = require('path')
 const app = express();
 const app2 = express();
 const { Client } = require('pg');
@@ -347,21 +348,21 @@ app.get('/users', async function(req,res){
 })
 
 app2.get('/', (req,res) =>{
-    if(sessao.logado) res.sendFile('../../index.html')
-    else res.sendFile('../../auth-basic-login.html')
+    if(sessao.logado) res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//index.html'))
+    else res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//auth-basic-login.html'))
 })
 
 app2.get('/index.html', (req,res) =>{
-    if(sessao.logado) res.sendFile('../../index.html')
-        else res.sendFile('../../auth-basic-login.html') 
+    if(sessao.logado) res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//index.html'))
+        else res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//auth-basic-login.html'))
 })
 
 app2.get('/adm.html', (req,res) =>{
-    if(sessao.logado) res.sendFile('../../adm.html')
-    else res.sendFile('../../auth-basic-login.html')
+    if(sessao.logado) res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//adm.html.html'))
+    else res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//auth-basic-login.html'))
 })
 
-app2.use(express.static('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/'));
+app2.use(express.static('matoxi/vertical-menu/'));
 
 
 
