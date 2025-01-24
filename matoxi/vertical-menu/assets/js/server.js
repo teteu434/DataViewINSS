@@ -2,7 +2,7 @@ const express = require('express');
 require ('dotenv').config({path: 'C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/.env'});
 const app = express();
 const app2 = express();
-const mysql = require('mysql2');
+const { Client } = require('pg');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
@@ -35,24 +35,28 @@ async function enviarEmail(destinatario, assunto, mensagem) {
 
 
 
-const banco = mysql.createConnection({
-    host: process.env.DB_HOST,
+const config = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB
-});
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB,
+    ssl: {
+        rejectUnauthorized: false
+    },
+}
+
+const banco = new Client(config)
 
 
-
-app.set('trust proxy', 1)
-
-
-
-banco.connect(function(err){
-    if(err) console.log(err);
-    else console.log("connected!");
-    
-});
+banco.connect((err) => {
+    if (err) {
+      console.error('Erro ao conectar ao banco:', err);
+    } else {
+      console.log('Conectado ao banco com sucesso!');
+    }
+  });
+  
 
 app.use(cors({
     origin: 'http://localhost:3000'
@@ -66,21 +70,21 @@ app.get('/', async function(req,res){
     
     try{
 
-        const [vitoria] = await banco.promise().query(`select * from dados where numero = 7001`);
-        const [bh] = await banco.promise().query(`select * from dados where numero = 11001`);
-        const [barbacena] = await banco.promise().query(`select * from dados where numero = 11021`);
-        const [contagem] = await banco.promise().query(`select * from dados where numero = 11022`);
-        const [divinopolis] = await banco.promise().query(`select * from dados where numero = 11023`);
-        const [GV] = await banco.promise().query(`select * from dados where numero = 11024`);
-        const [juizFora] = await banco.promise().query(`select * from dados where numero = 11025`);
-        const [montesClaros] = await banco.promise().query(`select * from dados where numero = 11026`);
-        const [ouroPreto] = await banco.promise().query(`select * from dados where numero = 11027`);
-        const [pocos] = await banco.promise().query(`select * from dados where numero = 11028`);
-        const [uberaba] = await banco.promise().query(`select * from dados where numero = 11029`);
-        const [uberlandia] = await banco.promise().query(`select * from dados where numero = 11030`);
-        const [varginha] = await banco.promise().query(`select * from dados where numero = 11031`);
-        const [diamantina] = await banco.promise().query(`select * from dados where numero = 11032`);
-        const [teofilo] = await banco.promise().query(`select * from dados where numero = 11033`);
+        const [vitoria] = await banco.query(`select * from dados where numero = 7001`);
+        const [bh] = await banco.query(`select * from dados where numero = 11001`);
+        const [barbacena] = await banco.query(`select * from dados where numero = 11021`);
+        const [contagem] = await banco.query(`select * from dados where numero = 11022`);
+        const [divinopolis] = await banco.query(`select * from dados where numero = 11023`);
+        const [GV] = await banco.query(`select * from dados where numero = 11024`);
+        const [juizFora] = await banco.query(`select * from dados where numero = 11025`);
+        const [montesClaros] = await banco.query(`select * from dados where numero = 11026`);
+        const [ouroPreto] = await banco.query(`select * from dados where numero = 11027`);
+        const [pocos] = await banco.query(`select * from dados where numero = 11028`);
+        const [uberaba] = await banco.query(`select * from dados where numero = 11029`);
+        const [uberlandia] = await banco.query(`select * from dados where numero = 11030`);
+        const [varginha] = await banco.query(`select * from dados where numero = 11031`);
+        const [diamantina] = await banco.query(`select * from dados where numero = 11032`);
+        const [teofilo] = await banco.query(`select * from dados where numero = 11033`);
         
         res.json({vitoria, bh, barbacena, contagem, divinopolis, GV, juizFora, montesClaros, ouroPreto, pocos, uberaba, uberlandia, varginha
             , diamantina, teofilo
@@ -92,21 +96,21 @@ app.get('/', async function(req,res){
 
 app.get('/tabela', async function(req,res){
     try{
-        const [vitoria] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Vitória'`);
-        const [bh] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Belo Horizonte'`);
-        const [barbacena] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Barbacena'`);
-        const [contagem] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Contagem'`);
-        const [divinopolis] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Divinópolis'`);
-        const [GV] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Governador Valadares'`);
-        const [juizFora] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Juíz de Fora'`);
-        const [montesClaros] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Montes Claros'`);
-        const [ouroPreto] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Ouro Preto'`);
-        const [pocos] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Poços de Caldas'`);
-        const [uberaba] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Uberaba'`);
-        const [uberlandia] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Uberlandia'`);
-        const [varginha] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Varginha'`);
-        const [diamantina] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Diamantina'`);
-        const [teofilo] = await banco.promise().query(`select * from pactuacao where Gerencia = 'Teófilo Otoni'`);
+        const [vitoria] = await banco.query(`select * from pactuacao where Gerencia = 'Vitória'`);
+        const [bh] = await banco.query(`select * from pactuacao where Gerencia = 'Belo Horizonte'`);
+        const [barbacena] = await banco.query(`select * from pactuacao where Gerencia = 'Barbacena'`);
+        const [contagem] = await banco.query(`select * from pactuacao where Gerencia = 'Contagem'`);
+        const [divinopolis] = await banco.query(`select * from pactuacao where Gerencia = 'Divinópolis'`);
+        const [GV] = await banco.query(`select * from pactuacao where Gerencia = 'Governador Valadares'`);
+        const [juizFora] = await banco.query(`select * from pactuacao where Gerencia = 'Juíz de Fora'`);
+        const [montesClaros] = await banco.query(`select * from pactuacao where Gerencia = 'Montes Claros'`);
+        const [ouroPreto] = await banco.query(`select * from pactuacao where Gerencia = 'Ouro Preto'`);
+        const [pocos] = await banco.query(`select * from pactuacao where Gerencia = 'Poços de Caldas'`);
+        const [uberaba] = await banco.query(`select * from pactuacao where Gerencia = 'Uberaba'`);
+        const [uberlandia] = await banco.query(`select * from pactuacao where Gerencia = 'Uberlandia'`);
+        const [varginha] = await banco.query(`select * from pactuacao where Gerencia = 'Varginha'`);
+        const [diamantina] = await banco.query(`select * from pactuacao where Gerencia = 'Diamantina'`);
+        const [teofilo] = await banco.query(`select * from pactuacao where Gerencia = 'Teófilo Otoni'`);
         res.setHeader('Content-Type', 'application/json');
         res.json({vitoria, bh, barbacena, contagem, divinopolis, GV, juizFora, montesClaros, ouroPreto, pocos, uberaba, uberlandia, varginha
             , diamantina, teofilo
@@ -118,7 +122,7 @@ app.get('/tabela', async function(req,res){
 
 app.post('/confereSenha', async function (req, res){
     const {email, senha} = req.body;
-    const [resultado] = await banco.promise().query(`select senha, adm, emailConfirmado, contaHabilitada from usuarios where email = '${email}'`);
+    const [resultado] = await banco.query(`select senha, adm, emailConfirmado, contaHabilitada from usuarios where email = '${email}'`);
     if(resultado.length == 0){
         res.status(500).json({ 
             correto: false,
@@ -145,7 +149,7 @@ app.post('/insertUser', async function (req, res) {
         const {usuario, email, senha, adm, contaHabilitada} = req.body;
         const pass = await bcrypt.hash(senha, 10);
         
-        await banco.promise().query(`insert into usuarios(usuario, email, senha, adm, contaHabilitada) values (?, ?, ?, ?, ?)`, 
+        await banco.query(`insert into usuarios(usuario, email, senha, adm, contaHabilitada) values (?, ?, ?, ?, ?)`, 
             [usuario, email, pass, adm, contaHabilitada])
         
             const mensagem = `
@@ -173,7 +177,7 @@ app.post('/recovery', async function (req, res) {
     
     const {destinatario} = req.body;
     try {
-        const [compare] = await banco.promise().query(`select usuario from usuarios where email = '${destinatario}'`)
+        const [compare] = await banco.query(`select usuario from usuarios where email = '${destinatario}'`)
         if(compare.length == 0){
             res.status(404).json({ message: "Erro ao achar usuário",
                 enviado: false
@@ -213,7 +217,7 @@ app.put('/reset', async function (req, res){
     const {usuario, senha} = req.body;
     
     try {
-        const [compare] = await banco.promise().query(`select senha from usuarios where usuario = '${usuario}'`)
+        const [compare] = await banco.query(`select senha from usuarios where usuario = '${usuario}'`)
         if(compare.length == 0){
             res.status(500).json({ message: "Erro ao achar usuário",
                 reset: false
@@ -227,7 +231,7 @@ app.put('/reset', async function (req, res){
                 })
             else{
                 const pass = await bcrypt.hash(senha, 10)
-                await banco.promise().query(`update usuarios set senha = '${pass}' where usuario = '${usuario}'`)
+                await banco.query(`update usuarios set senha = '${pass}' where usuario = '${usuario}'`)
                 res.status(200).json({ 
                     message: 'Senha resetada! Redirecionando pra login',
                     reset: true
@@ -255,7 +259,7 @@ app.get('/sessao', async function (req,res) {
 app2.get('/confirmar-email', async function (req, res) {
     const { email } = req.query;
     try {
-        await banco.promise().query(`update usuarios set emailConfirmado = true where email = '${email}'`)
+        await banco.query(`update usuarios set emailConfirmado = true where email = '${email}'`)
         res.sendFile('C:/Users/MATHEUSHENRIQUECOSTA/Desktop/site inss/main-files/matoxi/vertical-menu/auth-basic-login.html')
     } catch (error) {
         console.log(error)
@@ -270,7 +274,7 @@ app.post('/login', async function (req, res) {
         
         if(email.endsWith('@inss.gov.br')){
 
-            const [result] = await banco.promise().query(`select usuario from usuarios where email = ?`,
+            const [result] = await banco.query(`select usuario from usuarios where email = ?`,
                 [email]
             );
             
@@ -334,7 +338,7 @@ app.delete('/exclui', async function(req,res) {
 
 app.get('/users', async function(req,res){
     try{
-        const [users] = await banco.promise().query(`select * from usuarios`);
+        const [users] = await banco.query(`select * from usuarios`);
         res.setHeader('Content-Type', 'application/json');
         res.json(users);
     } catch (error){
