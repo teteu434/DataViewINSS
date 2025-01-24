@@ -335,7 +335,7 @@ app.get('/adm.html', (req,res) =>{
     else res.sendFile(path.join(__dirname, 'matoxi/vertical-menu//auth-basic-login.html'))
 })
 
-app.use(express.static(path.join(__dirname, 'matoxi/vertical-menu//adm.html.html')));
+app.use(express.static('matoxi/vertical-menu'));
 
 
 
