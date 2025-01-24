@@ -227,7 +227,7 @@ app.put('/reset', async function (req, res){
 app.get('/sessao', async function (req,res) {
     res.setHeader('Content-Type', 'application/json');
 
-    res.json(sessao.usuario);
+    res.json(sessao);
 })
 
 app.get('/confirmar-email', async function (req, res) {
